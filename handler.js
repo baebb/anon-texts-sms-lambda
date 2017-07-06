@@ -10,9 +10,13 @@ module.exports.sendMessage = (event, context, callback) => {
 };
 
 function sendSMS (event, callback) {
-  // convert shitty stuff to json
-  const eventData = JSON.parse(event.body);
-  // console.log(eventData);
+  // convert stuff to json if needed
+  let eventData;
+  try {
+    eventData = JSON.parse(event.body);
+  } catch (e) {
+    eventData = event.body;
+  }
   // set up message
   const sms = {
     to: eventData.to,
