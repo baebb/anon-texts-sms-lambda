@@ -1,7 +1,10 @@
+const axios = require('axios');
+
 const twilioAccountSid = process.env.TWILIO_ACCOUNT_SID;
 const twilioAuthToken = process.env.TWILIO_AUTH_TOKEN;
 const twilioPhoneNumber = process.env.TWILIO_PHONE_NUMBER;
 
+const sentMessagesURL = 'https://becqd6a376.execute-api.us-east-1.amazonaws.com/dev/sentMessages';
 const twilioClient = require('twilio')(twilioAccountSid, twilioAuthToken);
 
 module.exports.sendMessage = (event, context, callback) => {
@@ -53,6 +56,17 @@ function sendSMS (event, callback) {
       }),
     };
 
-    callback(null, response);
+    // save to sentMessages DB
+    axios.post(sentMessagesURL,{
+      number: eventData.to,
+      message: eventData.message
+    }).then((response) => {
+      console.log(`NEW_MESSAGE_SAVED_TO_DB ${data.to}`);
+      console.log(response);
+      // callback(null, response);
+    }).catch((error) => {
+      console.log(`SAVE_TO_DB_ERROR:`);
+      console.log(error);
+    });
   });
 }

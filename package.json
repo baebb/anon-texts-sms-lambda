@@ -5,6 +5,7 @@
   "main": "handler.js",
   "devDependencies": {},
   "dependencies": {
+    "axios": "^0.16.2",
     "twilio": "^3.3.0"
   },
   "scripts": {
