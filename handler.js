@@ -27,8 +27,7 @@ function sendSMS (event, callback) {
   twilioClient.messages.create(sms, (error, data) => {
     // error
     if (error) {
-      console.log(`error: ${error.status}`);
-      console.log(`error msg: ${error.message}`);
+      console.log(`TWILIO ERROR: ${error.status} ${error.message}`);
       const errResponse = {
         statusCode: error.status,
         headers: {
@@ -43,11 +42,7 @@ function sendSMS (event, callback) {
     }
   
     // text sent
-    console.log('NEW_MESSAGE_SENT');
-    console.log(`DATE_SENT: ${data.dateCreated}`);
-    console.log(`TO: ${data.to}`);
-    console.log(`FROM: ${data.from}`);
-    console.log(`MESSAGE: ${data.body}`);
+    console.log(`NEW_MESSAGE_SENT ${data.to}`);
     const response = {
       statusCode: 200,
       headers: {
