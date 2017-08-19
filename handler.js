@@ -20,6 +20,8 @@ function sendSMS (event, callback) {
   } catch (e) {
     eventData = event.body;
   }
+  // logging
+  console.log(`NEW_SEND_MESSAGE ${eventData.to}`);
   // set up message
   const sms = {
     to: eventData.to,
@@ -45,7 +47,7 @@ function sendSMS (event, callback) {
     }
   
     // text sent
-    console.log(`NEW_MESSAGE_SENT ${data.to}`);
+    console.log(`SEND_MESSAGE_SENT ${data.to}`);
     const response = {
       statusCode: 200,
       headers: {
@@ -60,10 +62,9 @@ function sendSMS (event, callback) {
     axios.post(sentMessagesURL,{
       number: eventData.to,
       message: eventData.message
-    }).then((response) => {
-      console.log(`NEW_MESSAGE_SAVED_TO_DB ${data.to}`);
-      console.log(response);
-      // callback(null, response);
+    }).then((res) => {
+      console.log(`SEND_MESSAGE_SAVED_TO_DB ${data.to}`);
+      callback(null, response);
     }).catch((error) => {
       console.log(`SAVE_TO_DB_ERROR:`);
       console.log(error);
