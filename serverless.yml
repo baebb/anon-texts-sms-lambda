@@ -15,6 +15,7 @@ provider:
 functions:
   sendMessage:
     handler: handler.sendMessage
+    memorySize: 128
     events:
       - http:
           path: send
