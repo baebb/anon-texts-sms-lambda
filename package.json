@@ -10,8 +10,10 @@
   },
   "scripts": {
     "deploy:dev": "sls deploy function -f sendMessage",
-    "test": "sls invoke -f sendMessage -p event.json",
-    "test:local": "sls invoke local -f sendMessage -p event.json",
+    "test:US": "sls invoke -f sendMessage -p test-US.json",
+    "test:US-local": "sls invoke local -f sendMessage -p test-US.json",
+    "test:AU": "sls invoke -f sendMessage -p test-AU.json",
+    "test:AU-local": "sls invoke local -f sendMessage -p test-AU.json",
     "logs": "sls logs -f sendMessage"
   },
   "author": "Ross Dyson",

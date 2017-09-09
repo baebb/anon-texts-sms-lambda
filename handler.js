@@ -2,7 +2,8 @@ const axios = require('axios');
 
 const twilioAccountSid = process.env.TWILIO_ACCOUNT_SID;
 const twilioAuthToken = process.env.TWILIO_AUTH_TOKEN;
-const twilioPhoneNumber = process.env.TWILIO_PHONE_NUMBER;
+const twilioUsPhoneNumber = process.env.TWILIO_US_PHONE_NUMBER;
+const twilioAuPhoneNumber = process.env.TWILIO_AU_PHONE_NUMBER;
 
 const sentMessagesURL = 'https://becqd6a376.execute-api.us-east-1.amazonaws.com/dev/sentMessages';
 const twilioClient = require('twilio')(twilioAccountSid, twilioAuthToken);
@@ -22,11 +23,16 @@ function sendSMS (event, callback) {
   }
   // logging
   console.log(`NEW_SEND_MESSAGE ${eventData.to}`);
+  // determine sending number
+  const numbersByCountry = {
+    US: twilioUsPhoneNumber,
+    AU: twilioAuPhoneNumber
+  };
   // set up message
   const sms = {
     to: eventData.to,
     body: eventData.message || '',
-    from: twilioPhoneNumber,
+    from: numbersByCountry[eventData.countryCode],
   };
   // use twilio SDK to send text message
   twilioClient.messages.create(sms, (error, data) => {
