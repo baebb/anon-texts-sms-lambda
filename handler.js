@@ -67,6 +67,7 @@ function sendSMS (event, callback) {
     // save to sentMessages DB
     axios.post(sentMessagesURL,{
       number: eventData.to,
+      countryCode: eventData.countryCode,
       message: eventData.message
     }).then((res) => {
       console.log(`SEND_MESSAGE_SAVED_TO_DB ${data.to}`);
