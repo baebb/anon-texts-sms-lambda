@@ -1,4 +1,5 @@
 const axios = require('axios');
+const uuid = require('uuid/v1');
 
 const twilioAccountSid = process.env.TWILIO_ACCOUNT_SID;
 const twilioAuthToken = process.env.TWILIO_AUTH_TOKEN;
@@ -22,7 +23,8 @@ function sendSMS (event, callback) {
     eventData = event.body;
   }
   // logging
-  console.log(`NEW_SEND_MESSAGE ${eventData.to}`);
+  const msgId = uuid();
+  console.log(`NEW_SEND_MESSAGE ${eventData.to} ${msgId}`);
   // determine sending number
   const numbersByCountry = {
     US: twilioUsPhoneNumber,
@@ -38,7 +40,7 @@ function sendSMS (event, callback) {
   twilioClient.messages.create(sms, (error, data) => {
     // error
     if (error) {
-      console.log(`TWILIO ERROR: ${error.status} ${error.message}`);
+      console.log(`TWILIO ERROR: ${msgId} ${error.status} ${error.message}`);
       const errResponse = {
         statusCode: error.status,
         headers: {
@@ -53,7 +55,7 @@ function sendSMS (event, callback) {
     }
   
     // text sent
-    console.log(`SEND_MESSAGE_SENT ${data.to}`);
+    console.log(`SEND_MESSAGE_SENT ${data.to} ${msgId}`);
     const response = {
       statusCode: 200,
       headers: {
@@ -68,12 +70,13 @@ function sendSMS (event, callback) {
     axios.post(sentMessagesURL,{
       number: eventData.to,
       countryCode: eventData.countryCode,
-      message: eventData.message
+      message: eventData.message,
+      id: msgId
     }).then((res) => {
-      console.log(`SEND_MESSAGE_SAVED_TO_DB ${data.to}`);
+      console.log(`SEND_MESSAGE_SAVED_TO_DB ${data.to} ${msgId}`);
       callback(null, response);
     }).catch((error) => {
-      console.log(`SAVE_TO_DB_ERROR:`);
+      console.log(`SAVE_TO_DB_ERROR ${msgId} ${data.to}`);
       console.log(error);
     });
   });

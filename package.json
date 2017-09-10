@@ -6,7 +6,8 @@
   "devDependencies": {},
   "dependencies": {
     "axios": "^0.16.2",
-    "twilio": "^3.3.0"
+    "twilio": "^3.3.0",
+    "uuid": "^3.1.0"
   },
   "scripts": {
     "deploy:dev": "sls deploy function -f sendMessage",
