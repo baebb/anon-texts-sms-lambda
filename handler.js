@@ -30,9 +30,13 @@ function sendSMS (event, callback) {
     US: twilioUsPhoneNumber,
     AU: twilioAuPhoneNumber
   };
+  const numberPrefix = {
+    US: '+1',
+    AU: '+61'
+  };
   // set up message
   const sms = {
-    to: eventData.to,
+    to: numberPrefix[eventData.countryCode] + eventData.to,
     body: eventData.message || '',
     from: numbersByCountry[eventData.countryCode],
   };
