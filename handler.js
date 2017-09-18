@@ -34,9 +34,10 @@ function sendSMS (event, callback) {
     US: '+1',
     AU: '+61'
   };
+  const formattedNumber = numberPrefix[eventData.countryCode] + eventData.to;
   // set up message
   const sms = {
-    to: numberPrefix[eventData.countryCode] + eventData.to,
+    to: formattedNumber,
     body: eventData.message || '',
     from: numbersByCountry[eventData.countryCode],
   };
@@ -72,7 +73,7 @@ function sendSMS (event, callback) {
 
     // save to sentMessages DB
     axios.post(sentMessagesURL,{
-      number: eventData.to,
+      number: formattedNumber,
       countryCode: eventData.countryCode,
       message: eventData.message,
       id: msgId
