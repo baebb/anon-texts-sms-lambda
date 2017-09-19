@@ -1,17 +1,13 @@
 service: anon-texts-sms-lambda
 
-custom:
-  stage: ${opt:stage, self:provider.stage}
-  secrets: ${file(secrets.yml):${self:custom.stage}}
-
 provider:
   name: aws
   runtime: nodejs6.10
   environment:
-      TWILIO_ACCOUNT_SID: ${self:custom.secrets.TWILIO_ACCOUNT_SID}
-      TWILIO_AUTH_TOKEN: ${self:custom.secrets.TWILIO_AUTH_TOKEN}
-      TWILIO_US_PHONE_NUMBER: ${self:custom.secrets.TWILIO_US_PHONE_NUMBER}
-      TWILIO_AU_PHONE_NUMBER: ${self:custom.secrets.TWILIO_AU_PHONE_NUMBER}
+      TWILIO_ACCOUNT_SID: ${env:TWILIO_ACCOUNT_SID, file(secrets.yml):TWILIO_ACCOUNT_SID}
+      TWILIO_AUTH_TOKEN: ${env:TWILIO_AUTH_TOKEN, file(secrets.yml):TWILIO_AUTH_TOKEN}
+      TWILIO_US_PHONE_NUMBER: ${env:TWILIO_US_PHONE_NUMBER, file(secrets.yml):TWILIO_US_PHONE_NUMBER}
+      TWILIO_AU_PHONE_NUMBER: ${env:TWILIO_AU_PHONE_NUMBER, file(secrets.yml):TWILIO_AU_PHONE_NUMBER}
 
 functions:
   sendMessage:
