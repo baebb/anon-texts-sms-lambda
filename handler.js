@@ -5,8 +5,10 @@ const twilioAccountSid = process.env.TWILIO_ACCOUNT_SID;
 const twilioAuthToken = process.env.TWILIO_AUTH_TOKEN;
 const twilioUsPhoneNumber = process.env.TWILIO_US_PHONE_NUMBER;
 const twilioAuPhoneNumber = process.env.TWILIO_AU_PHONE_NUMBER;
+const sentMessagesURL = process.env.stage === 'production' ?
+  'https://i0ygrrinsd.execute-api.us-east-1.amazonaws.com/production/sentMessages'
+  : 'https://becqd6a376.execute-api.us-east-1.amazonaws.com/dev/sentMessages';
 
-const sentMessagesURL = 'https://becqd6a376.execute-api.us-east-1.amazonaws.com/dev/sentMessages';
 const twilioClient = require('twilio')(twilioAccountSid, twilioAuthToken);
 
 module.exports.sendMessage = (event, context, callback) => {
